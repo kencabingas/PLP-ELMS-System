@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - ClassHub{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Welcome, {{ session.full_name }}!</h1>
+        <p>{% if session.role == 'teacher' %}Manage your classes and assignments{% else %}View your enrolled classes{% endif %}</p>
+    </div>
+
+    <div class="dashboard-actions">
+        {% if session.role == 'teacher' %}
+            <a href="{{ url_for('create_class') }}" class="btn btn-primary">+ Create Class</a>
+        {% else %}
+            <a href="{{ url_for('join_class') }}" class="btn btn-primary">+ Join Class</a>
+        {% endif %}
+    </div>
+
+    {% if classes %}
+        <div class="class-grid">
+            {% for class in classes %}
+                <a href="{{ url_for('class_view', class_id=class.id) }}" class="class-card">
+                    <div class="class-card-header">
+                        <h3>{{ class.title }}</h3>
+                        <p>{{ class.section or 'No section' }} • {{ class.subject or 'General' }}</p>
+                    </div>
+                    <div class="class-card-body">
+                        <div class="class-meta">
+                            <span class="class-teacher">
+                                {% if session.role == 'teacher' %}
+                                    You are teaching
+                                {% else %}
+                                    Teacher
+                                {% endif %}
+                            </span>
+                            <span class="class-code">{{ class.class_code }}</span>
+                        </div>
+                        {% if class.room %}
+                            <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                                📍 Room {{ class.room }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📚</div>
+            <h3>No classes yet</h3>
+            <p>
+                {% if session.role == 'teacher' %}
+                    Create your first class to get started
+                {% else %}
+                    Join a class using the class code from your teacher
+                {% endif %}
+            </p>
+            {% if session.role == 'teacher' %}
+                <a href="{{ url_for('create_class') }}" class="btn btn-primary">Create Class</a>
+            {% else %}
+                <a href="{{ url_for('join_class') }}" class="btn btn-primary">Join Class</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

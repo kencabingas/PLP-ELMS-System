@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Create Class - ClassHub{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Create New Class</h1>
+        <p>Set up a new class for your students</p>
+    </div>
+
+    <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <form method="POST" action="{{ url_for('create_class') }}">
+            <div class="form-group">
+                <label for="title">Class Title *</label>
+                <input type="text" id="title" name="title" placeholder="e.g., Introduction to Web Development" required>
+            </div>
+
+            <div class="form-group">
+                <label for="section">Section (optional)</label>
+                <input type="text" id="section" name="section" placeholder="e.g., CS101 - Section A">
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Subject (optional)</label>
+                <input type="text" id="subject" name="subject" placeholder="e.g., Computer Science">
+            </div>
+
+            <div class="form-group">
+                <label for="room">Room (optional)</label>
+                <input type="text" id="room" name="room" placeholder="e.g., Room 305">
+            </div>
+
+            <div class="card-footer" style="border: none; padding: 0; margin-top: 2rem;">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Create Class</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
